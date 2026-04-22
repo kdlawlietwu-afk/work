@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="人防健康管理月 · 团队健康大比拼 — 第一周体重下降率战报与团队总体下降率公示。" />
+  <title>人防健康管理月 · 团队健康大比拼</title>
+  <style>
+    :root {
+      --sky-50: #f0f9ff;
+      --sky-100: #e0f2fe;
+      --sky-200: #bae6fd;
+      --sky-300: #7dd3fc;
+      --sky-400: #38bdf8;
+      --sky-500: #0ea5e9;
+      --sky-600: #0284c7;
+      --sky-800: #075985;
+      --mint: #5eead4;
+      --mint-dim: #ccfbf1;
+      --white: #ffffff;
+      --slate-500: #64748b;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --captain: #b45309;
+      --captain-bg: #fffbeb;
+      --shadow: 0 4px 6px -1px rgb(14 116 144 / 0.08), 0 10px 24px -4px rgb(3 105 161 / 0.12);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--slate-800);
+      min-height: 100vh;
+      background: linear-gradient(168deg, #dbeafe 0%, var(--sky-50) 38%, #ecfeff 72%, var(--sky-50) 100%);
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 55% at 50% -15%, rgb(45 212 191 / 0.18), transparent 50%),
+        radial-gradient(ellipse 70% 45% at 100% 20%, rgb(56 189 248 / 0.2), transparent 50%),
+        radial-gradient(ellipse 55% 40% at 0% 85%, rgb(14 165 233 / 0.1), transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 3rem;
+    }
+    .hero-panel {
+      position: relative;
+      text-align: center;
+      padding: 2rem 1.25rem 2.25rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, rgb(255 255 255 / 0.92), rgb(240 253 250 / 0.88));
+      border: 1px solid var(--sky-200);
+      border-radius: 24px;
+      box-shadow: var(--shadow), 0 0 0 1px rgb(255 255 255 / 0.8) inset;
+      overflow: hidden;
+    }
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--mint), var(--sky-400), var(--sky-600));
+      opacity: 0.85;
+    }
+    .hero-icon-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .hero-icon-row svg {
+      width: 44px;
+      height: 44px;
+      opacity: 0.92;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--sky-800);
+      background: linear-gradient(90deg, var(--mint-dim), var(--sky-100));
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--sky-200);
+      margin-bottom: 0.85rem;
+    }
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 3px rgb(94 234 212 / 0.35);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(0.92); }
+    }
+    .hero h1.hero-main-title {
+      font-size: clamp(1.85rem, 4.8vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      color: var(--sky-800);
+    }
+    .hero-secondary-title {
+      margin-top: 0.45rem;
+      font-size: clamp(1.15rem, 3vw, 1.45rem);
+      font-weight: 700;
+      color: var(--sky-700);
+      letter-spacing: 0.06em;
+    }
+    .hero h1 .grad {
+      background: linear-gradient(115deg, var(--sky-700, #0369a1), var(--sky-500), var(--mint));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      margin-top: 0.65rem;
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--sky-600);
+      letter-spacing: 0.02em;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 0.65rem;
+      margin-top: 1rem;
+    }
+    .hero-tags span {
+      font-size: 0.78rem;
+      color: var(--slate-600);
+      background: var(--white);
+      padding: 0.28rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid var(--sky-200);
+    }
+    .hero-note {
+      margin-top: 1.1rem;
+      font-size: 0.88rem;
+      color: var(--slate-500);
+      max-width: 34em;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem 1rem;
+      margin-bottom: 1.35rem;
+      text-align: center;
+    }
+    .section-head h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--sky-800);
+      letter-spacing: 0.08em;
+    }
+    .section-head .line {
+      flex: 1;
+      min-width: 48px;
+      max-width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--sky-300), transparent);
+      border-radius: 2px;
+    }
+    .section-head p {
+      width: 100%;
+      font-size: 0.82rem;
+      color: var(--slate-500);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.35rem;
+    }
+    .card {
+      position: relative;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.35rem 1.45rem 1.4rem 1.35rem;
+      border: 1px solid var(--sky-200);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--mint), var(--sky-400));
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+    .card.card-first::before {
+      background: linear-gradient(180deg, #fcd34d, #f59e0b 45%, var(--sky-400));
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px -4px rgb(14 116 144 / 0.14), 0 24px 48px -12px rgb(3 105 161 / 0.12);
+    }
+    .card-inner { margin-left: 0.35rem; }
+    .card-ribbon {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--sky-600);
+      margin-bottom: 0.45rem;
+    }
+    .card-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed var(--sky-200);
+    }
+    .card-head h3 {
+      font-size: 1.24rem;
+      font-weight: 800;
+      color: var(--sky-800);
+    }
+    .team-name-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .team-crown {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      filter: drop-shadow(0 1px 2px rgb(217 119 6 / 0.4));
+    }
+    .team-crown svg {
+      width: 1.35rem;
+      height: 1.35rem;
+      display: block;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1.1rem;
+    }
+    .stat {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      font-size: 0.88rem;
+      color: var(--slate-600);
+    }
+    .stat-val {
+      font-size: 1.28rem;
+      font-weight: 800;
+      color: var(--sky-600);
+    }
+    .stat small {
+      font-size: 0.72rem;
+      color: var(--slate-600);
+      opacity: 0.85;
+    }
+    .members-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--sky-600);
+      margin-bottom: 0.5rem;
+    }
+    .members {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--slate-700);
+    }
+    .captain {
+      font-weight: 600;
+      color: var(--captain);
+      background: var(--captain-bg);
+      padding: 0.08rem 0.35rem;
+      border-radius: 6px;
+    }
+    .stats-wide {
+      justify-content: flex-end;
+      max-width: 100%;
+    }
+    .stat-val.drop-good { color: #059669; }
+    .stat-val.drop-warn { color: #b45309; }
+    .week1-block {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--sky-200);
+    }
+    .week1-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--sky-600);
+      margin-bottom: 0.55rem;
+    }
+    .week1-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.86rem;
+      color: var(--slate-700);
+    }
+    .week1-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.28rem 0;
+      border-bottom: 1px solid rgb(224 242 254 / 0.9);
+    }
+    .week1-list li:last-child { border-bottom: none; }
+    .week1-name { flex: 1; min-width: 0; }
+    .week1-pct {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: var(--sky-700);
+      white-space: nowrap;
+    }
+    .week1-pct.positive { color: #059669; }
+    .week1-pct.negative { color: #dc2626; }
+    .week1-pct.muted { color: var(--slate-500); font-weight: 600; }
+    .formula-note {
+      margin-top: 0.65rem;
+      font-size: 0.72rem;
+      color: var(--slate-500);
+      line-height: 1.5;
+    }
+    .footer-wave {
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+    .footer-wave svg {
+      width: min(100%, 560px);
+      height: auto;
+      opacity: 0.45;
+    }
+    footer {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--slate-600);
+      line-height: 1.6;
+    }
+    footer strong {
+      color: var(--sky-700);
+      font-weight: 700;
+    }
+    @media print {
+      body { background: #fff; }
+      body::before { display: none; }
+      .hero-panel { box-shadow: none; break-inside: avoid; }
+      .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+      .card:hover { transform: none; }
+      .hero-badge .dot { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero hero-panel">
+      <div class="hero-icon-row" aria-hidden="true">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="22" stroke="#38bdf8" stroke-width="2" fill="#f0f9ff"/>
+          <path d="M24 14c-4 6-8 9-8 14a8 8 0 0 0 16 0c0-5-4-8-8-14z" fill="#2dd4bf" opacity="0.9"/>
+        </svg>
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="10" width="36" height="28" rx="4" stroke="#0284c7" stroke-width="2" fill="#fff"/>
+          <path d="M14 22h20M14 28h12" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="34" cy="28" r="4" fill="#fbbf24"/>
+        </svg>
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 36 L16 20 L22 26 L32 12 L40 36 Z" stroke="#0284c7" stroke-width="2" fill="#e0f2fe" stroke-linejoin="round"/>
+          <circle cx="32" cy="12" r="3" fill="#2dd4bf"/>
+        </svg>
+      </div>
+      <p class="hero-badge"><span class="dot" aria-hidden="true"></span> TEAM HEALTH CHALLENGE 2026</p>
+      <h1 class="hero-main-title"><span class="grad">人防健康管理月</span></h1>
+      <p class="hero-secondary-title">团队健康大比拼</p>
+      <p class="hero-sub">活动目的：提升自律、减脂塑形、健康管理、增强凝聚</p>
+      <div class="hero-tags">
+        <span>提升自律</span>
+        <span>减脂塑形</span>
+        <span>健康管理</span>
+        <span>增强凝聚</span>
+      </div>
+      <p class="hero-note">本页公示各队<strong>人数</strong>、<strong>初始总体重</strong>与<strong>第一周体重下降率</strong>（仅展示百分比，不展示个人公斤数）；队长姓名后标注 ★。团队总体下降率 =（双录成员初始体重合计 − 双录成员第一次称体重合计）÷ 双录成员初始体重合计。</p>
+    </header>
+
+    <div class="section-head">
+      <span class="line" aria-hidden="true"></span>
+      <h2>参赛队伍一览</h2>
+      <span class="line" aria-hidden="true"></span>
+      <p>第一周战报 · 团队维度汇总，助力良性比拼与互相鼓劲</p>
+    </div>
+
+    <div class="grid">
+      {% for t in teams %}
+      <article class="card{% if t.is_first_place %} card-first{% endif %}">
+        <div class="card-inner">
+          <p class="card-ribbon">{% if t.is_first_place %}本期第一{% else %}参赛队{% endif %}</p>
+          <div class="card-head">
+            <h3 class="team-name-row">
+              {% if t.is_first_place %}
+              <span class="team-crown" title="团队总体下降率第一" aria-label="团队总体下降率第一">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M5 16h14v2H5v-2z" fill="#d97706"/>
+                  <path d="M4 9l2.2 5h11.6L20 9l-3.2 2.2L12 5.5 9.2 11.2 4 9z" fill="#fbbf24" stroke="#d97706" stroke-width="0.9" stroke-linejoin="round"/>
+                  <path d="M12 5.5l1.2 2.4M8 8.2l.8 1.6M16 8.2l-.8 1.6" stroke="#fef3c7" stroke-width="0.85" stroke-linecap="round" opacity="0.9"/>
+                </svg>
+              </span>
+              {% endif %}
+              <span>{{ t.name }}</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">{{ t.count }}</span> 人</span>
+              <span class="stat"><span class="stat-val">{{ t.total_kg }}</span> kg <small>初始合计</small></span>
+              {% if t.has_first_weigh and t.weighed_count %}
+              <span class="stat"><span class="stat-val">{{ t.first_total_kg }}</span> kg <small>第一次合计</small></span>
+              <span class="stat"><span class="stat-val {% if t.team_drop_pct is not none and t.team_drop_pct > 0 %}drop-good{% elif t.team_drop_pct is not none and t.team_drop_pct < 0 %}drop-warn{% endif %}">{% if t.team_drop_pct is not none %}{{ "%.2f"|format(t.team_drop_pct) }}%{% else %}—{% endif %}</span> <small>团队总体下降率</small></span>
+              {% endif %}
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            {% for m in t.members %}
+              {% if not loop.first %}、{% endif %}
+              {% if m.captain %}
+                <span class="captain">{{ m.name }} ★</span>
+              {% else %}
+                <span class="member">{{ m.name }}</span>
+              {% endif %}
+            {% endfor %}
+          </p>
+          {% if t.has_first_weigh %}
+          <div class="week1-block">
+            <p class="week1-title">第一周体重下降率战报</p>
+            <ul class="week1-list">
+              {% for w in t.member_week1 %}
+              <li>
+                <span class="week1-name">{% if w.captain %}<span class="captain">{{ w.name }} ★</span>{% else %}{{ w.name }}{% endif %}</span>
+                <span class="week1-pct {% if w.drop_pct is none %}muted{% elif w.drop_pct > 0 %}positive{% elif w.drop_pct < 0 %}negative{% endif %}">
+                  {% if w.drop_pct is not none %}{{ "%.2f"|format(w.drop_pct) }}%{% else %}待录{% endif %}
+                </span>
+              </li>
+              {% endfor %}
+            </ul>
+            {% if t.weighed_count and t.weighed_count < t.count %}
+            <p class="formula-note">本队共 {{ t.count }} 人，已双录（初始+第一次）{{ t.weighed_count }} 人；团队总体下降率按已双录成员合计计算。</p>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="footer-wave" aria-hidden="true">
+      <svg viewBox="0 0 1200 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0 32 Q300 8 600 28 T1200 24 L1200 48 L0 48 Z" fill="url(#wgrad)" opacity="0.35"/>
+        <defs>
+          <linearGradient id="wgrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#2dd4bf"/>
+            <stop offset="50%" stop-color="#38bdf8"/>
+            <stop offset="100%" stop-color="#0284c7"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <footer>
+      <strong>人防健康管理月</strong> · <strong>团队健康大比拼</strong> · 数据来自 <code style="font-size:0.85em;background:#e0f2fe;padding:0.1em 0.35em;border-radius:4px;">团队健康大比拼0408.xlsx</code><br />
+      按「队伍名称」分组；团队下降率公式：（∑初始 − ∑第一次）÷ ∑初始（口径：已双录成员）
+    </footer>
+  </div>
+</body>
+</html>
