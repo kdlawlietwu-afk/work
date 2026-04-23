@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="人防健康管理月 · 团队健康大比拼 — 第一周体重下降率战报与团队总体下降率公示。" />
+  <meta name="description" content="人防健康管理月 · 团队健康大比拼 — 第一至第三周体重下降率战报与团队总体下降率公示。" />
   <title>人防健康管理月 · 团队健康大比拼</title>
   <style>
     :root {
@@ -86,7 +86,6 @@
       width: auto;
       max-width: min(100%, 420px);
       object-fit: contain;
-      /* 透明底 PNG：轻微描边式阴影，便于在浅色背景上辨认 */
       filter: drop-shadow(0 1px 2px rgb(15 23 42 / 0.08)) drop-shadow(0 2px 8px rgb(3 105 161 / 0.12));
     }
     .hero-badge {
@@ -127,7 +126,6 @@
       font-size: clamp(1.02rem, 2.65vw, 1.32rem);
       font-weight: 600;
       letter-spacing: 0.05em;
-      /* sky-700 #0369a1，略透明以减轻抢眼程度 */
       color: rgb(3 105 161 / 0.78);
     }
     .hero h1 .grad {
@@ -209,6 +207,98 @@
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1.35rem;
     }
+    .week-row {
+      margin-bottom: 2rem;
+    }
+    .week-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 0.35rem 0 1rem;
+    }
+    .week-divider::before,
+    .week-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sky-300), transparent);
+    }
+    .week-divider span {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--sky-700);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .trend-panel {
+      margin-top: 0.75rem;
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--sky-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem 1rem 0.8rem;
+    }
+    .trend-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #0369a1;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+    .trend-svg {
+      width: 100%;
+      height: 300px;
+      display: block;
+      background: linear-gradient(180deg, rgb(240 249 255 / 0.7), rgb(255 255 255 / 0.9));
+      border: 1px solid rgb(186 230 253 / 0.9);
+      border-radius: 12px;
+    }
+    .trend-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 0.9rem;
+      margin-top: 0.7rem;
+      font-size: 0.78rem;
+      color: var(--slate-600);
+    }
+    .trend-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .trend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .trend-tip {
+      margin-top: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--slate-700);
+      min-height: 1.2em;
+    }
+    .trend-tooltip {
+      position: absolute;
+      display: none;
+      pointer-events: none;
+      background: rgb(15 23 42 / 0.92);
+      color: #fff;
+      font-size: 0.76rem;
+      line-height: 1.4;
+      padding: 0.35rem 0.5rem;
+      border-radius: 8px;
+      box-shadow: 0 6px 16px rgb(2 132 199 / 0.28);
+      z-index: 3;
+      white-space: nowrap;
+      transform: translate(-50%, -100%);
+    }
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.35rem;
+    }
     .card {
       position: relative;
       background: var(--white);
@@ -237,29 +327,13 @@
       box-shadow: 0 10px 22px -4px rgb(14 116 144 / 0.14), 0 24px 48px -12px rgb(3 105 161 / 0.12);
     }
     .card-inner { margin-left: 0.35rem; }
-    .card-head-first {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .card-first-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.65rem 1rem;
-      width: 100%;
-      flex-wrap: wrap;
-    }
-    .card-first-title-row .team-name-row {
-      min-width: 0;
-    }
-    .ribbon-first {
-      margin-left: auto;
-      font-size: 0.88rem;
+    .card-ribbon {
+      display: inline-block;
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.12em;
-      color: var(--captain);
-      text-align: right;
-      flex-shrink: 0;
+      letter-spacing: 0.14em;
+      color: var(--sky-600);
+      margin-bottom: 0.45rem;
     }
     .card-head {
       display: flex;
@@ -289,8 +363,8 @@
       filter: drop-shadow(0 1px 2px rgb(217 119 6 / 0.4));
     }
     .team-crown svg {
-      width: 1.85rem;
-      height: 1.85rem;
+      width: 1.35rem;
+      height: 1.35rem;
       display: block;
     }
     .stats {
@@ -378,6 +452,14 @@
     .week1-pct.positive { color: #059669; }
     .week1-pct.negative { color: #dc2626; }
     .week1-pct.muted { color: var(--slate-500); font-weight: 600; }
+    .week1-extra {
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+      white-space: nowrap;
+    }
+    .week1-extra.positive { color: #059669; }
+    .week1-extra.negative { color: #dc2626; }
+    .week1-extra.muted { color: var(--slate-500); }
     .formula-note {
       margin-top: 0.65rem;
       font-size: 0.72rem;
@@ -396,15 +478,9 @@
     footer {
       text-align: center;
       margin-top: 1rem;
-      font-size: 0.7rem;
+      font-size: 0.8rem;
       color: var(--slate-600);
-      line-height: 1.55;
-    }
-    footer code {
-      font-size: 0.92em;
-      background: #e0f2fe;
-      padding: 0.1em 0.35em;
-      border-radius: 4px;
+      line-height: 1.6;
     }
     footer strong {
       color: var(--sky-700);
@@ -417,6 +493,12 @@
       .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
       .card:hover { transform: none; }
       .hero-badge .dot { animation: none; }
+    }
+    @media (max-width: 960px) {
+      .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .week-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -442,35 +524,54 @@
       <span class="line" aria-hidden="true"></span>
       <h2>参赛队伍一览</h2>
       <span class="line" aria-hidden="true"></span>
-      <p>第一周战报（4.1-4.8） </p>
     </div>
 
-    <div class="grid">
+    <section class="trend-panel">
+      <p class="trend-title">各队每周下降率表现</p>
+      <svg id="trend-chart" class="trend-svg" viewBox="0 0 980 300" preserveAspectRatio="none" aria-label="各队每周下降率表现折线图"></svg>
+      <div id="trend-tooltip" class="trend-tooltip"></div>
+      <div id="trend-legend" class="trend-legend"></div>
+      <p id="trend-tip" class="trend-tip">将鼠标移到触点可查看队伍与下降率详情</p>
+    </section>
+
+    
+    <section class="week-row">
+      <div class="week-divider">
+        <span>
+          
+          第一周战报（4.1-4.8）
+          
+        </span>
+      </div>
+      <div class="week-grid">
+      
+      
       
       <article class="card card-first">
         <div class="card-inner">
-          <div class="card-head card-head-first">
-            <div class="card-first-title-row">
-              <h3 class="team-name-row">
-                
-                <span class="team-crown" title="团队总体下降率第一" aria-label="团队总体下降率第一">
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M5 16h14v2H5v-2z" fill="#d97706"/>
-                    <path d="M4 9l2.2 5h11.6L20 9l-3.2 2.2L12 5.5 9.2 11.2 4 9z" fill="#fbbf24" stroke="#d97706" stroke-width="0.9" stroke-linejoin="round"/>
-                    <path d="M12 5.5l1.2 2.4M8 8.2l.8 1.6M16 8.2l-.8 1.6" stroke="#fef3c7" stroke-width="0.85" stroke-linecap="round" opacity="0.9"/>
-                  </svg>
-                </span>
-                
-                <span>鲜花队</span>
-              </h3>
-              <span class="ribbon-first">本期第一</span>
-            </div>
+          <p class="card-ribbon">
+            
+            第一周第1名
+            
+          </p>
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span class="team-crown" title="第一周团队总体下降率第一" aria-label="第一周团队总体下降率第一">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M5 16h14v2H5v-2z" fill="#d97706"/>
+                  <path d="M4 9l2.2 5h11.6L20 9l-3.2 2.2L12 5.5 9.2 11.2 4 9z" fill="#fbbf24" stroke="#d97706" stroke-width="0.9" stroke-linejoin="round"/>
+                  <path d="M12 5.5l1.2 2.4M8 8.2l.8 1.6M16 8.2l-.8 1.6" stroke="#fef3c7" stroke-width="0.85" stroke-linecap="round" opacity="0.9"/>
+                </svg>
+              </span>
+              
+              <span>鲜花队</span>
+            </h3>
             <div class="stats stats-wide">
               <span class="stat"><span class="stat-val">7</span> 人</span>
               <span class="stat"><span class="stat-val">692.1</span> kg <small>初始合计</small></span>
-              
-              <span class="stat"><span class="stat-val">674.8</span> kg <small>第一次合计</small></span>
-              <span class="stat"><span class="stat-val drop-good">2.50%</span> <small>团队总体下降率</small></span>
+              <span class="stat"><span class="stat-val">674.8</span> kg <small>第一周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">2.50%</span> <small>第一周总体下降率</small></span>
               
             </div>
           </div>
@@ -484,7 +585,12 @@
             
               、
               
-                <span class="member">邱璐</span>
+                <span class="member">崔佳杰</span>
+              
+            
+              、
+              
+                <span class="member">王子伟</span>
               
             
               、
@@ -504,78 +610,99 @@
             
               、
               
-                <span class="member">崔佳杰</span>
-              
-            
-              、
-              
-                <span class="member">王子伟</span>
+                <span class="member">邱璐</span>
               
             
           </p>
-          
           <div class="week1-block">
             <p class="week1-title">第一周体重下降率战报</p>
             <ul class="week1-list">
               
               <li>
                 <span class="week1-name"><span class="captain">郑晨曦 ★</span></span>
-                <span class="week1-pct positive">
-                  2.29%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">邱璐</span>
-                <span class="week1-pct positive">
-                  4.67%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">章 荣</span>
-                <span class="week1-pct positive">
-                  4.62%
+                <span>
+                  <span class="week1-pct positive">
+                    2.29%
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
                 <span class="week1-name">夏放鸣</span>
-                <span class="week1-pct positive">
-                  4.46%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">张涛</span>
-                <span class="week1-pct positive">
-                  1.62%
+                <span>
+                  <span class="week1-pct positive">
+                    4.46%
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
                 <span class="week1-name">崔佳杰</span>
-                <span class="week1-pct positive">
-                  1.21%
+                <span>
+                  <span class="week1-pct positive">
+                    1.21%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">张涛</span>
+                <span>
+                  <span class="week1-pct positive">
+                    1.62%
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
                 <span class="week1-name">王子伟</span>
-                <span class="week1-pct negative">
-                  -0.26%
+                <span>
+                  <span class="week1-pct negative">
+                    -0.26%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">章 荣</span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.62%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">邱璐</span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.67%
+                  </span>
+                  
                 </span>
               </li>
               
             </ul>
             
           </div>
-          
         </div>
       </article>
       
+      
+      
       <article class="card">
         <div class="card-inner">
+          <p class="card-ribbon">
+            
+            第一周第2名
+            
+          </p>
           <div class="card-head">
             <h3 class="team-name-row">
               
@@ -584,9 +711,8 @@
             <div class="stats stats-wide">
               <span class="stat"><span class="stat-val">8</span> 人</span>
               <span class="stat"><span class="stat-val">698.65</span> kg <small>初始合计</small></span>
-              
-              <span class="stat"><span class="stat-val">681.68</span> kg <small>第一次合计</small></span>
-              <span class="stat"><span class="stat-val drop-good">2.43%</span> <small>团队总体下降率</small></span>
+              <span class="stat"><span class="stat-val">681.68</span> kg <small>第一周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">2.43%</span> <small>第一周总体下降率</small></span>
               
             </div>
           </div>
@@ -600,12 +726,17 @@
             
               、
               
+                <span class="member">张翼</span>
+              
+            
+              、
+              
                 <span class="member">唐洁</span>
               
             
               、
               
-                <span class="member">卞凌峰</span>
+                <span class="member">胡紫琦</span>
               
             
               、
@@ -625,85 +756,109 @@
             
               、
               
-                <span class="member">胡紫琦</span>
-              
-            
-              、
-              
-                <span class="member">张翼</span>
+                <span class="member">卞凌峰</span>
               
             
           </p>
-          
           <div class="week1-block">
             <p class="week1-title">第一周体重下降率战报</p>
             <ul class="week1-list">
               
               <li>
                 <span class="week1-name"><span class="captain">张渊峰 ★</span></span>
-                <span class="week1-pct positive">
-                  2.31%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">唐洁</span>
-                <span class="week1-pct positive">
-                  3.44%
+                <span>
+                  <span class="week1-pct positive">
+                    2.31%
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
                 <span class="week1-name">卞凌峰</span>
-                <span class="week1-pct positive">
-                  3.22%
+                <span>
+                  <span class="week1-pct positive">
+                    3.22%
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
-                <span class="week1-name">沈琳</span>
-                <span class="week1-pct positive">
-                  2.86%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">杜 骏</span>
-                <span class="week1-pct positive">
-                  2.46%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">李秀珍</span>
-                <span class="week1-pct positive">
-                  2.01%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">胡紫琦</span>
-                <span class="week1-pct positive">
-                  1.84%
+                <span class="week1-name">唐洁</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.44%
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
                 <span class="week1-name">张翼</span>
-                <span class="week1-pct positive">
-                  0.76%
+                <span>
+                  <span class="week1-pct positive">
+                    0.76%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">李秀珍</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.01%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">杜 骏</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.46%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">沈琳</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.86%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">胡紫琦</span>
+                <span>
+                  <span class="week1-pct positive">
+                    1.84%
+                  </span>
+                  
                 </span>
               </li>
               
             </ul>
             
           </div>
-          
         </div>
       </article>
       
+      
+      
       <article class="card">
         <div class="card-inner">
+          <p class="card-ribbon">
+            
+            第一周第3名
+            
+          </p>
           <div class="card-head">
             <h3 class="team-name-row">
               
@@ -712,9 +867,8 @@
             <div class="stats stats-wide">
               <span class="stat"><span class="stat-val">7</span> 人</span>
               <span class="stat"><span class="stat-val">685.65</span> kg <small>初始合计</small></span>
-              
-              <span class="stat"><span class="stat-val">672.5</span> kg <small>第一次合计</small></span>
-              <span class="stat"><span class="stat-val drop-good">1.92%</span> <small>团队总体下降率</small></span>
+              <span class="stat"><span class="stat-val">672.5</span> kg <small>第一周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">1.92%</span> <small>第一周总体下降率</small></span>
               
             </div>
           </div>
@@ -728,7 +882,7 @@
             
               、
               
-                <span class="member">陈思瀚</span>
+                <span class="member">朱斌</span>
               
             
               、
@@ -738,7 +892,346 @@
             
               、
               
+                <span class="member">陈思瀚</span>
+              
+            
+              、
+              
+                <span class="member">石佳能</span>
+              
+            
+              、
+              
                 <span class="member">王雄</span>
+              
+            
+              、
+              
+                <span class="member">童超</span>
+              
+            
+          </p>
+          <div class="week1-block">
+            <p class="week1-title">第一周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">刘振磊 ★</span></span>
+                <span>
+                  <span class="week1-pct positive">
+                    0.91%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">朱斌</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.11%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王隽祺</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.19%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王雄</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.22%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">石佳能</span>
+                <span>
+                  <span class="week1-pct negative">
+                    -0.22%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">童超</span>
+                <span>
+                  <span class="week1-pct positive">
+                    1.08%
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">陈思瀚</span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.05%
+                  </span>
+                  
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+        </div>
+      </article>
+      
+      </div>
+    </section>
+      
+    <section class="week-row">
+      <div class="week-divider">
+        <span>
+          
+          第二周战报（4.9-4.16）
+          
+        </span>
+      </div>
+      <div class="week-grid">
+      
+      
+      
+      <article class="card card-first">
+        <div class="card-inner">
+          <p class="card-ribbon">
+            
+            第二周第1名
+            
+          </p>
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span class="team-crown" title="第二周团队总体下降率第一" aria-label="第二周团队总体下降率第一">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M5 16h14v2H5v-2z" fill="#d97706"/>
+                  <path d="M4 9l2.2 5h11.6L20 9l-3.2 2.2L12 5.5 9.2 11.2 4 9z" fill="#fbbf24" stroke="#d97706" stroke-width="0.9" stroke-linejoin="round"/>
+                  <path d="M12 5.5l1.2 2.4M8 8.2l.8 1.6M16 8.2l-.8 1.6" stroke="#fef3c7" stroke-width="0.85" stroke-linecap="round" opacity="0.9"/>
+                </svg>
+              </span>
+              
+              <span>破茧队</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">8</span> 人</span>
+              <span class="stat"><span class="stat-val">698.65</span> kg <small>初始合计</small></span>
+              <span class="stat"><span class="stat-val">669.9</span> kg <small>第二周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">4.12%</span> <small>第二周总体下降率</small></span>
+              
+              <span class="stat"><span class="stat-val drop-good">+1.69%</span> <small>较前一周变化</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">张渊峰 ★</span>
+              
+            
+              、
+              
+                <span class="member">张翼</span>
+              
+            
+              、
+              
+                <span class="member">唐洁</span>
+              
+            
+              、
+              
+                <span class="member">胡紫琦</span>
+              
+            
+              、
+              
+                <span class="member">沈琳</span>
+              
+            
+              、
+              
+                <span class="member">杜 骏</span>
+              
+            
+              、
+              
+                <span class="member">李秀珍</span>
+              
+            
+              、
+              
+                <span class="member">卞凌峰</span>
+              
+            
+          </p>
+          <div class="week1-block">
+            <p class="week1-title">第二周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">张渊峰 ★</span></span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.51%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +2.20%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">卞凌峰</span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.11%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.89%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">唐洁</span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.63%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.19%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">张翼</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.42%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.66%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">李秀珍</span>
+                <span>
+                  <span class="week1-pct positive">
+                    6.85%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +4.83%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">杜 骏</span>
+                <span>
+                  <span class="week1-pct positive">
+                    1.84%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -0.63%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">沈琳</span>
+                <span>
+                  <span class="week1-pct positive">
+                    5.50%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +2.65%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">胡紫琦</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.18%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.34%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+        </div>
+      </article>
+      
+      
+      
+      <article class="card">
+        <div class="card-inner">
+          <p class="card-ribbon">
+            
+            第二周第2名
+            
+          </p>
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span>脂烬队</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">7</span> 人</span>
+              <span class="stat"><span class="stat-val">685.65</span> kg <small>初始合计</small></span>
+              <span class="stat"><span class="stat-val">661.44</span> kg <small>第二周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">3.53%</span> <small>第二周总体下降率</small></span>
+              
+              <span class="stat"><span class="stat-val drop-good">+1.61%</span> <small>较前一周变化</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">刘振磊 ★</span>
               
             
               、
@@ -748,7 +1241,12 @@
             
               、
               
-                <span class="member">童超</span>
+                <span class="member">王隽祺</span>
+              
+            
+              、
+              
+                <span class="member">陈思瀚</span>
               
             
               、
@@ -756,69 +1254,852 @@
                 <span class="member">石佳能</span>
               
             
+              、
+              
+                <span class="member">王雄</span>
+              
+            
+              、
+              
+                <span class="member">童超</span>
+              
+            
           </p>
-          
           <div class="week1-block">
-            <p class="week1-title">第一周体重下降率战报</p>
+            <p class="week1-title">第二周体重下降率战报</p>
             <ul class="week1-list">
               
               <li>
                 <span class="week1-name"><span class="captain">刘振磊 ★</span></span>
-                <span class="week1-pct positive">
-                  0.91%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">陈思瀚</span>
-                <span class="week1-pct positive">
-                  4.05%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">王隽祺</span>
-                <span class="week1-pct positive">
-                  3.19%
-                </span>
-              </li>
-              
-              <li>
-                <span class="week1-name">王雄</span>
-                <span class="week1-pct positive">
-                  2.22%
+                <span>
+                  <span class="week1-pct positive">
+                    1.82%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.91%）
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
                 <span class="week1-name">朱斌</span>
-                <span class="week1-pct positive">
-                  2.11%
+                <span>
+                  <span class="week1-pct positive">
+                    2.95%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.84%）
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
-                <span class="week1-name">童超</span>
-                <span class="week1-pct positive">
-                  1.08%
+                <span class="week1-name">王隽祺</span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.73%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.54%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王雄</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.96%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.74%）
+                  </span>
+                  
                 </span>
               </li>
               
               <li>
                 <span class="week1-name">石佳能</span>
-                <span class="week1-pct negative">
-                  -0.22%
+                <span>
+                  <span class="week1-pct positive">
+                    2.77%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +2.99%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">童超</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.98%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +2.91%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">陈思瀚</span>
+                <span>
+                  <span class="week1-pct positive">
+                    6.11%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +2.05%）
+                  </span>
+                  
                 </span>
               </li>
               
             </ul>
             
           </div>
-          
         </div>
       </article>
       
-    </div>
+      
+      
+      <article class="card">
+        <div class="card-inner">
+          <p class="card-ribbon">
+            
+            第二周第3名
+            
+          </p>
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span>鲜花队</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">7</span> 人</span>
+              <span class="stat"><span class="stat-val">692.1</span> kg <small>初始合计</small></span>
+              <span class="stat"><span class="stat-val">674.4</span> kg <small>第二周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">2.56%</span> <small>第二周总体下降率</small></span>
+              
+              <span class="stat"><span class="stat-val drop-good">+0.06%</span> <small>较前一周变化</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">郑晨曦 ★</span>
+              
+            
+              、
+              
+                <span class="member">崔佳杰</span>
+              
+            
+              、
+              
+                <span class="member">王子伟</span>
+              
+            
+              、
+              
+                <span class="member">章 荣</span>
+              
+            
+              、
+              
+                <span class="member">夏放鸣</span>
+              
+            
+              、
+              
+                <span class="member">张涛</span>
+              
+            
+              、
+              
+                <span class="member">邱璐</span>
+              
+            
+          </p>
+          <div class="week1-block">
+            <p class="week1-title">第二周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">郑晨曦 ★</span></span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.13%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -0.16%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">夏放鸣</span>
+                <span>
+                  <span class="week1-pct positive">
+                    5.76%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.30%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">崔佳杰</span>
+                <span>
+                  <span class="week1-pct positive">
+                    0.93%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -0.28%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">张涛</span>
+                <span>
+                  <span class="week1-pct positive">
+                    1.68%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.07%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王子伟</span>
+                <span>
+                  <span class="week1-pct positive">
+                    0.10%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.36%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">章 荣</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.49%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -1.13%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">邱璐</span>
+                <span>
+                  <span class="week1-pct positive">
+                    5.39%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.72%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+        </div>
+      </article>
+      
+      </div>
+    </section>
+      
+    <section class="week-row">
+      <div class="week-divider">
+        <span>
+          
+          第三周战报（4.17-4.22）
+          
+        </span>
+      </div>
+      <div class="week-grid">
+      
+      
+      
+      <article class="card card-first">
+        <div class="card-inner">
+          <p class="card-ribbon">
+            
+            第三周第1名
+            
+          </p>
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span class="team-crown" title="第三周团队总体下降率第一" aria-label="第三周团队总体下降率第一">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M5 16h14v2H5v-2z" fill="#d97706"/>
+                  <path d="M4 9l2.2 5h11.6L20 9l-3.2 2.2L12 5.5 9.2 11.2 4 9z" fill="#fbbf24" stroke="#d97706" stroke-width="0.9" stroke-linejoin="round"/>
+                  <path d="M12 5.5l1.2 2.4M8 8.2l.8 1.6M16 8.2l-.8 1.6" stroke="#fef3c7" stroke-width="0.85" stroke-linecap="round" opacity="0.9"/>
+                </svg>
+              </span>
+              
+              <span>破茧队</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">8</span> 人</span>
+              <span class="stat"><span class="stat-val">698.65</span> kg <small>初始合计</small></span>
+              <span class="stat"><span class="stat-val">665.25</span> kg <small>第三周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">4.78%</span> <small>第三周总体下降率</small></span>
+              
+              <span class="stat"><span class="stat-val drop-good">+0.67%</span> <small>较前一周变化</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">张渊峰 ★</span>
+              
+            
+              、
+              
+                <span class="member">张翼</span>
+              
+            
+              、
+              
+                <span class="member">唐洁</span>
+              
+            
+              、
+              
+                <span class="member">胡紫琦</span>
+              
+            
+              、
+              
+                <span class="member">沈琳</span>
+              
+            
+              、
+              
+                <span class="member">杜 骏</span>
+              
+            
+              、
+              
+                <span class="member">李秀珍</span>
+              
+            
+              、
+              
+                <span class="member">卞凌峰</span>
+              
+            
+          </p>
+          <div class="week1-block">
+            <p class="week1-title">第三周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">张渊峰 ★</span></span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.51%
+                  </span>
+                  
+                  <span class="week1-extra ">
+                    （较前一周 0.00%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">卞凌峰</span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.65%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.54%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">唐洁</span>
+                <span>
+                  <span class="week1-pct positive">
+                    6.37%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.75%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">张翼</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.28%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -0.14%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">李秀珍</span>
+                <span>
+                  <span class="week1-pct positive">
+                    6.44%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -0.40%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">杜 骏</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.51%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.68%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">沈琳</span>
+                <span>
+                  <span class="week1-pct positive">
+                    6.82%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.32%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">胡紫琦</span>
+                <span>
+                  <span class="week1-pct positive">
+                    4.02%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.84%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+        </div>
+      </article>
+      
+      
+      
+      <article class="card">
+        <div class="card-inner">
+          <p class="card-ribbon">
+            
+            第三周第2名
+            
+          </p>
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span>脂烬队</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">7</span> 人</span>
+              <span class="stat"><span class="stat-val">685.65</span> kg <small>初始合计</small></span>
+              <span class="stat"><span class="stat-val">661.35</span> kg <small>第三周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">3.54%</span> <small>第三周总体下降率</small></span>
+              
+              <span class="stat"><span class="stat-val drop-good">+0.01%</span> <small>较前一周变化</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">刘振磊 ★</span>
+              
+            
+              、
+              
+                <span class="member">朱斌</span>
+              
+            
+              、
+              
+                <span class="member">王隽祺</span>
+              
+            
+              、
+              
+                <span class="member">陈思瀚</span>
+              
+            
+              、
+              
+                <span class="member">石佳能</span>
+              
+            
+              、
+              
+                <span class="member">王雄</span>
+              
+            
+              、
+              
+                <span class="member">童超</span>
+              
+            
+          </p>
+          <div class="week1-block">
+            <p class="week1-title">第三周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">刘振磊 ★</span></span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.64%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.82%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">朱斌</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.65%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -0.30%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王隽祺</span>
+                <span>
+                  <span class="week1-pct positive">
+                    1.89%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -2.84%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王雄</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.56%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.59%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">石佳能</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.87%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.10%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">童超</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.23%
+                  </span>
+                  
+                  <span class="week1-extra negative">
+                    （较前一周 -0.76%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">陈思瀚</span>
+                <span>
+                  <span class="week1-pct positive">
+                    7.13%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.03%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+        </div>
+      </article>
+      
+      
+      
+      <article class="card">
+        <div class="card-inner">
+          <p class="card-ribbon">
+            
+            第三周第3名
+            
+          </p>
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span>鲜花队</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">7</span> 人</span>
+              <span class="stat"><span class="stat-val">692.1</span> kg <small>初始合计</small></span>
+              <span class="stat"><span class="stat-val">670.25</span> kg <small>第三周合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">3.16%</span> <small>第三周总体下降率</small></span>
+              
+              <span class="stat"><span class="stat-val drop-good">+0.60%</span> <small>较前一周变化</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">郑晨曦 ★</span>
+              
+            
+              、
+              
+                <span class="member">崔佳杰</span>
+              
+            
+              、
+              
+                <span class="member">王子伟</span>
+              
+            
+              、
+              
+                <span class="member">章 荣</span>
+              
+            
+              、
+              
+                <span class="member">夏放鸣</span>
+              
+            
+              、
+              
+                <span class="member">张涛</span>
+              
+            
+              、
+              
+                <span class="member">邱璐</span>
+              
+            
+          </p>
+          <div class="week1-block">
+            <p class="week1-title">第三周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">郑晨曦 ★</span></span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.54%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.41%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">夏放鸣</span>
+                <span>
+                  <span class="week1-pct positive">
+                    6.74%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.98%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">崔佳杰</span>
+                <span>
+                  <span class="week1-pct positive">
+                    1.14%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.21%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">张涛</span>
+                <span>
+                  <span class="week1-pct positive">
+                    2.69%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.01%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王子伟</span>
+                <span>
+                  <span class="week1-pct positive">
+                    1.14%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +1.04%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">章 荣</span>
+                <span>
+                  <span class="week1-pct positive">
+                    3.59%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.10%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">邱璐</span>
+                <span>
+                  <span class="week1-pct positive">
+                    6.25%
+                  </span>
+                  
+                  <span class="week1-extra positive">
+                    （较前一周 +0.86%）
+                  </span>
+                  
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+        </div>
+      </article>
+      
+      </div>
+    </section>
+      
 
     <div class="footer-wave" aria-hidden="true">
       <svg viewBox="0 0 1200 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -833,9 +2114,116 @@
       </svg>
     </div>
     <footer>
-      <strong>人防健康管理月</strong> · <strong>团队健康大比拼</strong> · 数据来自 <code>团队健康大比拼0408.xlsx</code><br />
-      团队下降率公式：（∑初始 − ∑第一次）÷ ∑初始（口径：已双录成员）
+      <strong>人防健康管理月</strong> · <strong>团队健康大比拼</strong> · 数据来自 <code style="font-size:0.85em;background:#e0f2fe;padding:0.1em 0.35em;border-radius:4px;">团队健康大比拼0423.xlsx</code><br />
+      按「队伍名称」分组；团队下降率公式：（∑初始 − ∑当周）÷ ∑初始（口径：已双录成员）
     </footer>
   </div>
+  <script>
+    (function () {
+      const series = [{"name": "\u7834\u8327\u961f", "points": [2.43, 4.12, 4.78]}, {"name": "\u8102\u70ec\u961f", "points": [1.92, 3.53, 3.54]}, {"name": "\u9c9c\u82b1\u961f", "points": [2.5, 2.56, 3.16]}];
+      const svg = document.getElementById("trend-chart");
+      const legend = document.getElementById("trend-legend");
+      const tip = document.getElementById("trend-tip");
+      const tooltip = document.getElementById("trend-tooltip");
+      if (!svg || !legend || !Array.isArray(series) || series.length === 0) return;
+
+      const W = 980, H = 300;
+      const pad = { left: 54, right: 24, top: 20, bottom: 40 };
+      const xPos = [
+        pad.left,
+        (pad.left + (W - pad.right)) / 2,
+        W - pad.right
+      ];
+      const allValues = series.flatMap(s => s.points).filter(v => v !== null && v !== undefined);
+      if (!allValues.length) return;
+      let minY = Math.min(...allValues);
+      let maxY = Math.max(...allValues);
+      if (minY === maxY) {
+        minY -= 0.5;
+        maxY += 0.5;
+      }
+      const y = (v) => {
+        const t = (v - minY) / (maxY - minY);
+        return (H - pad.bottom) - t * (H - pad.top - pad.bottom);
+      };
+
+      const palette = ["#0284c7", "#059669", "#7c3aed", "#ea580c", "#dc2626", "#0f766e", "#2563eb", "#9333ea", "#0891b2", "#65a30d"];
+      const el = (name, attrs = {}) => {
+        const n = document.createElementNS("http://www.w3.org/2000/svg", name);
+        Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, String(v)));
+        return n;
+      };
+
+      svg.appendChild(el("line", { x1: pad.left, y1: H - pad.bottom, x2: W - pad.right, y2: H - pad.bottom, stroke: "#94a3b8", "stroke-width": 1 }));
+      svg.appendChild(el("line", { x1: pad.left, y1: pad.top, x2: pad.left, y2: H - pad.bottom, stroke: "#94a3b8", "stroke-width": 1 }));
+      svg.appendChild(el("text", { x: xPos[0], y: H - 12, "text-anchor": "middle", fill: "#334155", "font-size": 12 })).textContent = "第一周";
+      svg.appendChild(el("text", { x: xPos[1], y: H - 12, "text-anchor": "middle", fill: "#334155", "font-size": 12 })).textContent = "第二周";
+      svg.appendChild(el("text", { x: xPos[2], y: H - 12, "text-anchor": "middle", fill: "#334155", "font-size": 12 })).textContent = "第三周";
+      svg.appendChild(el("text", { x: 8, y: pad.top + 2, fill: "#475569", "font-size": 12 })).textContent = `${maxY.toFixed(2)}%`;
+      svg.appendChild(el("text", { x: 8, y: H - pad.bottom + 4, fill: "#475569", "font-size": 12 })).textContent = `${minY.toFixed(2)}%`;
+
+      series.forEach((s, i) => {
+        const c = palette[i % palette.length];
+        const valid = [];
+        const pointMeta = [];
+        s.points.forEach((v, idx) => {
+          if (v !== null && v !== undefined) {
+            const p = [xPos[idx], y(v)];
+            valid.push(p);
+            pointMeta.push({ x: p[0], y: p[1], weekNo: idx + 1, value: v });
+          }
+        });
+        if (valid.length >= 2) {
+          const d = valid.map((p, idx) => `${idx === 0 ? "M" : "L"} ${p[0]} ${p[1]}`).join(" ");
+          svg.appendChild(el("path", { d, fill: "none", stroke: c, "stroke-width": 2.2, "stroke-linecap": "round" }));
+        }
+        pointMeta.forEach((p) => {
+          const label = el("text", {
+            x: p.x,
+            y: p.y - 8,
+            "text-anchor": "middle",
+            fill: c,
+            "font-size": 11,
+            "font-weight": 700
+          });
+          label.textContent = `${Number(p.value).toFixed(2)}%`;
+          svg.appendChild(label);
+
+          const dot = el("circle", {
+            cx: p.x,
+            cy: p.y,
+            r: 4.2,
+            fill: c,
+            stroke: "#ffffff",
+            "stroke-width": 1.2,
+            style: "cursor:pointer"
+          });
+          const msg = `${s.name} · 第${p.weekNo}周：${Number(p.value).toFixed(2)}%`;
+          dot.addEventListener("mouseenter", (ev) => {
+            if (tip) {
+              tip.textContent = msg;
+            }
+            if (tooltip) {
+              const panelRect = svg.parentElement.getBoundingClientRect();
+              const x = ev.clientX - panelRect.left;
+              const y = ev.clientY - panelRect.top;
+              tooltip.textContent = msg;
+              tooltip.style.left = `${x}px`;
+              tooltip.style.top = `${y - 10}px`;
+              tooltip.style.display = "block";
+            }
+          });
+          dot.addEventListener("mouseleave", () => {
+            if (tooltip) tooltip.style.display = "none";
+          });
+          svg.appendChild(dot);
+        });
+        const item = document.createElement("span");
+        item.className = "trend-legend-item";
+        item.innerHTML = `<span class="trend-dot" style="background:${c}"></span><span>${s.name}</span>`;
+        legend.appendChild(item);
+      });
+    })();
+  </script>
 </body>
 </html>

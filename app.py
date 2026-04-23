@@ -4,7 +4,7 @@ from pathlib import Path
 
 from flask import Flask, render_template
 
-from data import load_teams, resolve_xlsx_path
+from data import build_trend_series, build_week_rows, load_teams, resolve_xlsx_path
 
 ROOT = Path(__file__).resolve().parent
 XLSX = resolve_xlsx_path(ROOT)
@@ -15,7 +15,9 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     teams = load_teams(XLSX)
-    return render_template("index.html", teams=teams)
+    week_rows = build_week_rows(teams)
+    trend_series = build_trend_series(teams)
+    return render_template("index.html", teams=teams, week_rows=week_rows, trend_series=trend_series)
 
 
 if __name__ == "__main__":

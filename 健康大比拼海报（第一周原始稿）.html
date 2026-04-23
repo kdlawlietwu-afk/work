@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="人防健康管理月 · 团队健康大比拼 — 第一周体重下降率战报与团队总体下降率公示。" />
+  <title>人防健康管理月 · 团队健康大比拼</title>
+  <style>
+    :root {
+      --sky-50: #f0f9ff;
+      --sky-100: #e0f2fe;
+      --sky-200: #bae6fd;
+      --sky-300: #7dd3fc;
+      --sky-400: #38bdf8;
+      --sky-500: #0ea5e9;
+      --sky-600: #0284c7;
+      --sky-800: #075985;
+      --mint: #5eead4;
+      --mint-dim: #ccfbf1;
+      --white: #ffffff;
+      --slate-500: #64748b;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --captain: #b45309;
+      --captain-bg: #fffbeb;
+      --shadow: 0 4px 6px -1px rgb(14 116 144 / 0.08), 0 10px 24px -4px rgb(3 105 161 / 0.12);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      color: var(--slate-800);
+      min-height: 100vh;
+      background: linear-gradient(168deg, #dbeafe 0%, var(--sky-50) 38%, #ecfeff 72%, var(--sky-50) 100%);
+      position: relative;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 55% at 50% -15%, rgb(45 212 191 / 0.18), transparent 50%),
+        radial-gradient(ellipse 70% 45% at 100% 20%, rgb(56 189 248 / 0.2), transparent 50%),
+        radial-gradient(ellipse 55% 40% at 0% 85%, rgb(14 165 233 / 0.1), transparent 45%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.75rem 1.25rem 3rem;
+    }
+    .hero-panel {
+      position: relative;
+      text-align: center;
+      padding: 2rem 1.25rem 2.25rem;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, rgb(255 255 255 / 0.92), rgb(240 253 250 / 0.88));
+      border: 1px solid var(--sky-200);
+      border-radius: 24px;
+      box-shadow: var(--shadow), 0 0 0 1px rgb(255 255 255 / 0.8) inset;
+      overflow: hidden;
+    }
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--mint), var(--sky-400), var(--sky-600));
+      opacity: 0.85;
+    }
+    .hero-logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 0 0 1rem;
+    }
+    .hero-logo {
+      display: block;
+      height: clamp(58px, 14vw, 88px);
+      width: auto;
+      max-width: min(100%, 420px);
+      object-fit: contain;
+      /* 透明底 PNG：轻微描边式阴影，便于在浅色背景上辨认 */
+      filter: drop-shadow(0 1px 2px rgb(15 23 42 / 0.08)) drop-shadow(0 2px 8px rgb(3 105 161 / 0.12));
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--sky-800);
+      background: linear-gradient(90deg, var(--mint-dim), var(--sky-100));
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--sky-200);
+      margin-bottom: 0.85rem;
+    }
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 3px rgb(94 234 212 / 0.35);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(0.92); }
+    }
+    .hero h1.hero-main-title {
+      font-size: clamp(1.85rem, 4.8vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      color: var(--sky-800);
+    }
+    .hero-secondary-title {
+      margin-top: 0.45rem;
+      font-size: clamp(1.02rem, 2.65vw, 1.32rem);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      /* sky-700 #0369a1，略透明以减轻抢眼程度 */
+      color: rgb(3 105 161 / 0.78);
+    }
+    .hero h1 .grad {
+      background: linear-gradient(115deg, var(--sky-700, #0369a1), var(--sky-500), var(--mint));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-purpose {
+      margin-top: 0.5rem;
+      max-width: 36em;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: clamp(1.12rem, 2.4vw, 1.28rem);
+      font-weight: 700;
+      color: rgb(13 148 136 / 0.9);
+      letter-spacing: 0.03em;
+      line-height: 1.55;
+    }
+    .hero-purpose .purpose-label {
+      color: inherit;
+      font-weight: 800;
+      font-size: 1em;
+      margin-right: 0.12em;
+    }
+    .hero-sub {
+      margin-top: 0.65rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--slate-500);
+      letter-spacing: 0.04em;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem 0.65rem;
+      margin-top: 1rem;
+    }
+    .hero-tags span {
+      font-size: 0.78rem;
+      color: var(--slate-600);
+      background: var(--white);
+      padding: 0.28rem 0.65rem;
+      border-radius: 8px;
+      border: 1px solid var(--sky-200);
+    }
+    .section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem 1rem;
+      margin-bottom: 1.35rem;
+      text-align: center;
+    }
+    .section-head h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--sky-800);
+      letter-spacing: 0.08em;
+    }
+    .section-head .line {
+      flex: 1;
+      min-width: 48px;
+      max-width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--sky-300), transparent);
+      border-radius: 2px;
+    }
+    .section-head p {
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--slate-600);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.35rem;
+    }
+    .card {
+      position: relative;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 1.35rem 1.45rem 1.4rem 1.35rem;
+      border: 1px solid var(--sky-200);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--mint), var(--sky-400));
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+    .card.card-first::before {
+      background: linear-gradient(180deg, #fcd34d, #f59e0b 45%, var(--sky-400));
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px -4px rgb(14 116 144 / 0.14), 0 24px 48px -12px rgb(3 105 161 / 0.12);
+    }
+    .card-inner { margin-left: 0.35rem; }
+    .card-head-first {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .card-first-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem 1rem;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+    .card-first-title-row .team-name-row {
+      min-width: 0;
+    }
+    .ribbon-first {
+      margin-left: auto;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--captain);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .card-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed var(--sky-200);
+    }
+    .card-head h3 {
+      font-size: 1.24rem;
+      font-weight: 800;
+      color: var(--sky-800);
+    }
+    .team-name-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .team-crown {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      filter: drop-shadow(0 1px 2px rgb(217 119 6 / 0.4));
+    }
+    .team-crown svg {
+      width: 1.85rem;
+      height: 1.85rem;
+      display: block;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1.1rem;
+    }
+    .stat {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.25rem;
+      font-size: 0.88rem;
+      color: var(--slate-600);
+    }
+    .stat-val {
+      font-size: 1.28rem;
+      font-weight: 800;
+      color: var(--sky-600);
+    }
+    .stat small {
+      font-size: 0.72rem;
+      color: var(--slate-600);
+      opacity: 0.85;
+    }
+    .members-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--sky-600);
+      margin-bottom: 0.5rem;
+    }
+    .members {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--slate-700);
+    }
+    .captain {
+      font-weight: 600;
+      color: var(--captain);
+      background: var(--captain-bg);
+      padding: 0.08rem 0.35rem;
+      border-radius: 6px;
+    }
+    .stats-wide {
+      justify-content: flex-end;
+      max-width: 100%;
+    }
+    .stat-val.drop-good { color: #059669; }
+    .stat-val.drop-warn { color: #b45309; }
+    .week1-block {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--sky-200);
+    }
+    .week1-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--sky-600);
+      margin-bottom: 0.55rem;
+    }
+    .week1-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.86rem;
+      color: var(--slate-700);
+    }
+    .week1-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.75rem;
+      padding: 0.28rem 0;
+      border-bottom: 1px solid rgb(224 242 254 / 0.9);
+    }
+    .week1-list li:last-child { border-bottom: none; }
+    .week1-name { flex: 1; min-width: 0; }
+    .week1-pct {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: var(--sky-700);
+      white-space: nowrap;
+    }
+    .week1-pct.positive { color: #059669; }
+    .week1-pct.negative { color: #dc2626; }
+    .week1-pct.muted { color: var(--slate-500); font-weight: 600; }
+    .formula-note {
+      margin-top: 0.65rem;
+      font-size: 0.72rem;
+      color: var(--slate-500);
+      line-height: 1.5;
+    }
+    .footer-wave {
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+    .footer-wave svg {
+      width: min(100%, 560px);
+      height: auto;
+      opacity: 0.45;
+    }
+    footer {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      color: var(--slate-600);
+      line-height: 1.55;
+    }
+    footer code {
+      font-size: 0.92em;
+      background: #e0f2fe;
+      padding: 0.1em 0.35em;
+      border-radius: 4px;
+    }
+    footer strong {
+      color: var(--sky-700);
+      font-weight: 700;
+    }
+    @media print {
+      body { background: #fff; }
+      body::before { display: none; }
+      .hero-panel { box-shadow: none; break-inside: avoid; }
+      .card { break-inside: avoid; box-shadow: none; border: 1px solid #ccc; }
+      .card:hover { transform: none; }
+      .hero-badge .dot { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero hero-panel">
+      <div class="hero-logo-wrap">
+        <img class="hero-logo" src="人防logo.png" alt="上海保安人防 · Smart Security Service Safeguard" width="420" height="110" decoding="async" />
+      </div>
+      <p class="hero-badge"><span class="dot" aria-hidden="true"></span> TEAM HEALTH CHALLENGE 2026</p>
+      <h1 class="hero-main-title"><span class="grad">人防健康管理月</span></h1>
+      <p class="hero-secondary-title">团队健康大比拼（4.1-4.28）</p>
+      <p class="hero-purpose"><span class="purpose-label">活动目的：</span>提升自律、减脂塑形、健康管理、增强凝聚</p>
+      <p class="hero-sub">科学管理体重 · 团队携手争先 · 共享健康生活</p>
+      <div class="hero-tags">
+        <span>团队作战</span>
+        <span>每周战报</span>
+        <span>隐私保护</span>
+      </div>
+    </header>
+
+    <div class="section-head">
+      <span class="line" aria-hidden="true"></span>
+      <h2>参赛队伍一览</h2>
+      <span class="line" aria-hidden="true"></span>
+      <p>第一周战报（4.1-4.8） </p>
+    </div>
+
+    <div class="grid">
+      
+      <article class="card card-first">
+        <div class="card-inner">
+          <div class="card-head card-head-first">
+            <div class="card-first-title-row">
+              <h3 class="team-name-row">
+                
+                <span class="team-crown" title="团队总体下降率第一" aria-label="团队总体下降率第一">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M5 16h14v2H5v-2z" fill="#d97706"/>
+                    <path d="M4 9l2.2 5h11.6L20 9l-3.2 2.2L12 5.5 9.2 11.2 4 9z" fill="#fbbf24" stroke="#d97706" stroke-width="0.9" stroke-linejoin="round"/>
+                    <path d="M12 5.5l1.2 2.4M8 8.2l.8 1.6M16 8.2l-.8 1.6" stroke="#fef3c7" stroke-width="0.85" stroke-linecap="round" opacity="0.9"/>
+                  </svg>
+                </span>
+                
+                <span>鲜花队</span>
+              </h3>
+              <span class="ribbon-first">本期第一</span>
+            </div>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">7</span> 人</span>
+              <span class="stat"><span class="stat-val">692.1</span> kg <small>初始合计</small></span>
+              
+              <span class="stat"><span class="stat-val">674.8</span> kg <small>第一次合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">2.50%</span> <small>团队总体下降率</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">郑晨曦 ★</span>
+              
+            
+              、
+              
+                <span class="member">邱璐</span>
+              
+            
+              、
+              
+                <span class="member">章 荣</span>
+              
+            
+              、
+              
+                <span class="member">夏放鸣</span>
+              
+            
+              、
+              
+                <span class="member">张涛</span>
+              
+            
+              、
+              
+                <span class="member">崔佳杰</span>
+              
+            
+              、
+              
+                <span class="member">王子伟</span>
+              
+            
+          </p>
+          
+          <div class="week1-block">
+            <p class="week1-title">第一周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">郑晨曦 ★</span></span>
+                <span class="week1-pct positive">
+                  2.29%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">邱璐</span>
+                <span class="week1-pct positive">
+                  4.67%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">章 荣</span>
+                <span class="week1-pct positive">
+                  4.62%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">夏放鸣</span>
+                <span class="week1-pct positive">
+                  4.46%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">张涛</span>
+                <span class="week1-pct positive">
+                  1.62%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">崔佳杰</span>
+                <span class="week1-pct positive">
+                  1.21%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王子伟</span>
+                <span class="week1-pct negative">
+                  -0.26%
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+          
+        </div>
+      </article>
+      
+      <article class="card">
+        <div class="card-inner">
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span>破茧队</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">8</span> 人</span>
+              <span class="stat"><span class="stat-val">698.65</span> kg <small>初始合计</small></span>
+              
+              <span class="stat"><span class="stat-val">681.68</span> kg <small>第一次合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">2.43%</span> <small>团队总体下降率</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">张渊峰 ★</span>
+              
+            
+              、
+              
+                <span class="member">唐洁</span>
+              
+            
+              、
+              
+                <span class="member">卞凌峰</span>
+              
+            
+              、
+              
+                <span class="member">沈琳</span>
+              
+            
+              、
+              
+                <span class="member">杜 骏</span>
+              
+            
+              、
+              
+                <span class="member">李秀珍</span>
+              
+            
+              、
+              
+                <span class="member">胡紫琦</span>
+              
+            
+              、
+              
+                <span class="member">张翼</span>
+              
+            
+          </p>
+          
+          <div class="week1-block">
+            <p class="week1-title">第一周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">张渊峰 ★</span></span>
+                <span class="week1-pct positive">
+                  2.31%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">唐洁</span>
+                <span class="week1-pct positive">
+                  3.44%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">卞凌峰</span>
+                <span class="week1-pct positive">
+                  3.22%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">沈琳</span>
+                <span class="week1-pct positive">
+                  2.86%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">杜 骏</span>
+                <span class="week1-pct positive">
+                  2.46%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">李秀珍</span>
+                <span class="week1-pct positive">
+                  2.01%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">胡紫琦</span>
+                <span class="week1-pct positive">
+                  1.84%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">张翼</span>
+                <span class="week1-pct positive">
+                  0.76%
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+          
+        </div>
+      </article>
+      
+      <article class="card">
+        <div class="card-inner">
+          <div class="card-head">
+            <h3 class="team-name-row">
+              
+              <span>脂烬队</span>
+            </h3>
+            <div class="stats stats-wide">
+              <span class="stat"><span class="stat-val">7</span> 人</span>
+              <span class="stat"><span class="stat-val">685.65</span> kg <small>初始合计</small></span>
+              
+              <span class="stat"><span class="stat-val">672.5</span> kg <small>第一次合计</small></span>
+              <span class="stat"><span class="stat-val drop-good">1.92%</span> <small>团队总体下降率</small></span>
+              
+            </div>
+          </div>
+          <p class="members-label">成员名单</p>
+          <p class="members">
+            
+              
+              
+                <span class="captain">刘振磊 ★</span>
+              
+            
+              、
+              
+                <span class="member">陈思瀚</span>
+              
+            
+              、
+              
+                <span class="member">王隽祺</span>
+              
+            
+              、
+              
+                <span class="member">王雄</span>
+              
+            
+              、
+              
+                <span class="member">朱斌</span>
+              
+            
+              、
+              
+                <span class="member">童超</span>
+              
+            
+              、
+              
+                <span class="member">石佳能</span>
+              
+            
+          </p>
+          
+          <div class="week1-block">
+            <p class="week1-title">第一周体重下降率战报</p>
+            <ul class="week1-list">
+              
+              <li>
+                <span class="week1-name"><span class="captain">刘振磊 ★</span></span>
+                <span class="week1-pct positive">
+                  0.91%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">陈思瀚</span>
+                <span class="week1-pct positive">
+                  4.05%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王隽祺</span>
+                <span class="week1-pct positive">
+                  3.19%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">王雄</span>
+                <span class="week1-pct positive">
+                  2.22%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">朱斌</span>
+                <span class="week1-pct positive">
+                  2.11%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">童超</span>
+                <span class="week1-pct positive">
+                  1.08%
+                </span>
+              </li>
+              
+              <li>
+                <span class="week1-name">石佳能</span>
+                <span class="week1-pct negative">
+                  -0.22%
+                </span>
+              </li>
+              
+            </ul>
+            
+          </div>
+          
+        </div>
+      </article>
+      
+    </div>
+
+    <div class="footer-wave" aria-hidden="true">
+      <svg viewBox="0 0 1200 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M0 32 Q300 8 600 28 T1200 24 L1200 48 L0 48 Z" fill="url(#wgrad)" opacity="0.35"/>
+        <defs>
+          <linearGradient id="wgrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#2dd4bf"/>
+            <stop offset="50%" stop-color="#38bdf8"/>
+            <stop offset="100%" stop-color="#0284c7"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <footer>
+      <strong>人防健康管理月</strong> · <strong>团队健康大比拼</strong> · 数据来自 <code>团队健康大比拼0408.xlsx</code><br />
+      团队下降率公式：（∑初始 − ∑第一次）÷ ∑初始（口径：已双录成员）
+    </footer>
+  </div>
+</body>
+</html>

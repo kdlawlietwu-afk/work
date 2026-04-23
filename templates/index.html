@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="人防健康管理月 · 团队健康大比拼 — 第一周体重下降率战报与团队总体下降率公示。" />
+  <meta name="description" content="人防健康管理月 · 团队健康大比拼 — 第一至第三周体重下降率战报与团队总体下降率公示。" />
   <title>人防健康管理月 · 团队健康大比拼</title>
   <style>
     :root {
@@ -75,18 +75,18 @@
       background: linear-gradient(90deg, var(--mint), var(--sky-400), var(--sky-600));
       opacity: 0.85;
     }
-    .hero-icon-row {
+    .hero-logo-wrap {
       display: flex;
       justify-content: center;
-      align-items: center;
-      gap: 1.25rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
+      margin: 0 0 1rem;
     }
-    .hero-icon-row svg {
-      width: 44px;
-      height: 44px;
-      opacity: 0.92;
+    .hero-logo {
+      display: block;
+      height: clamp(58px, 14vw, 88px);
+      width: auto;
+      max-width: min(100%, 420px);
+      object-fit: contain;
+      filter: drop-shadow(0 1px 2px rgb(15 23 42 / 0.08)) drop-shadow(0 2px 8px rgb(3 105 161 / 0.12));
     }
     .hero-badge {
       display: inline-flex;
@@ -123,10 +123,10 @@
     }
     .hero-secondary-title {
       margin-top: 0.45rem;
-      font-size: clamp(1.15rem, 3vw, 1.45rem);
-      font-weight: 700;
-      color: var(--sky-700);
-      letter-spacing: 0.06em;
+      font-size: clamp(1.02rem, 2.65vw, 1.32rem);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgb(3 105 161 / 0.78);
     }
     .hero h1 .grad {
       background: linear-gradient(115deg, var(--sky-700, #0369a1), var(--sky-500), var(--mint));
@@ -134,12 +134,29 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+    .hero-purpose {
+      margin-top: 0.5rem;
+      max-width: 36em;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: clamp(1.12rem, 2.4vw, 1.28rem);
+      font-weight: 700;
+      color: rgb(13 148 136 / 0.9);
+      letter-spacing: 0.03em;
+      line-height: 1.55;
+    }
+    .hero-purpose .purpose-label {
+      color: inherit;
+      font-weight: 800;
+      font-size: 1em;
+      margin-right: 0.12em;
+    }
     .hero-sub {
       margin-top: 0.65rem;
-      font-size: 1.02rem;
-      font-weight: 600;
-      color: var(--sky-600);
-      letter-spacing: 0.02em;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--slate-500);
+      letter-spacing: 0.04em;
     }
     .hero-tags {
       display: flex;
@@ -155,15 +172,6 @@
       padding: 0.28rem 0.65rem;
       border-radius: 8px;
       border: 1px solid var(--sky-200);
-    }
-    .hero-note {
-      margin-top: 1.1rem;
-      font-size: 0.88rem;
-      color: var(--slate-500);
-      max-width: 34em;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.6;
     }
     .section-head {
       display: flex;
@@ -190,12 +198,105 @@
     }
     .section-head p {
       width: 100%;
-      font-size: 0.82rem;
-      color: var(--slate-500);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--slate-600);
     }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.35rem;
+    }
+    .week-row {
+      margin-bottom: 2rem;
+    }
+    .week-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 0.35rem 0 1rem;
+    }
+    .week-divider::before,
+    .week-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sky-300), transparent);
+    }
+    .week-divider span {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--sky-700);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .trend-panel {
+      margin-top: 0.75rem;
+      position: relative;
+      background: var(--white);
+      border: 1px solid var(--sky-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem 1rem 0.8rem;
+    }
+    .trend-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #0369a1;
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+    .trend-svg {
+      width: 100%;
+      height: 300px;
+      display: block;
+      background: linear-gradient(180deg, rgb(240 249 255 / 0.7), rgb(255 255 255 / 0.9));
+      border: 1px solid rgb(186 230 253 / 0.9);
+      border-radius: 12px;
+    }
+    .trend-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 0.9rem;
+      margin-top: 0.7rem;
+      font-size: 0.78rem;
+      color: var(--slate-600);
+    }
+    .trend-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .trend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .trend-tip {
+      margin-top: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--slate-700);
+      min-height: 1.2em;
+    }
+    .trend-tooltip {
+      position: absolute;
+      display: none;
+      pointer-events: none;
+      background: rgb(15 23 42 / 0.92);
+      color: #fff;
+      font-size: 0.76rem;
+      line-height: 1.4;
+      padding: 0.35rem 0.5rem;
+      border-radius: 8px;
+      box-shadow: 0 6px 16px rgb(2 132 199 / 0.28);
+      z-index: 3;
+      white-space: nowrap;
+      transform: translate(-50%, -100%);
+    }
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1.35rem;
     }
     .card {
@@ -351,6 +452,14 @@
     .week1-pct.positive { color: #059669; }
     .week1-pct.negative { color: #dc2626; }
     .week1-pct.muted { color: var(--slate-500); font-weight: 600; }
+    .week1-extra {
+      font-size: 0.8rem;
+      margin-left: 0.5rem;
+      white-space: nowrap;
+    }
+    .week1-extra.positive { color: #059669; }
+    .week1-extra.negative { color: #dc2626; }
+    .week1-extra.muted { color: var(--slate-500); }
     .formula-note {
       margin-top: 0.65rem;
       font-size: 0.72rem;
@@ -385,55 +494,78 @@
       .card:hover { transform: none; }
       .hero-badge .dot { animation: none; }
     }
+    @media (max-width: 960px) {
+      .week-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .week-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header class="hero hero-panel">
-      <div class="hero-icon-row" aria-hidden="true">
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="24" cy="24" r="22" stroke="#38bdf8" stroke-width="2" fill="#f0f9ff"/>
-          <path d="M24 14c-4 6-8 9-8 14a8 8 0 0 0 16 0c0-5-4-8-8-14z" fill="#2dd4bf" opacity="0.9"/>
-        </svg>
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="10" width="36" height="28" rx="4" stroke="#0284c7" stroke-width="2" fill="#fff"/>
-          <path d="M14 22h20M14 28h12" stroke="#7dd3fc" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="34" cy="28" r="4" fill="#fbbf24"/>
-        </svg>
-        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 36 L16 20 L22 26 L32 12 L40 36 Z" stroke="#0284c7" stroke-width="2" fill="#e0f2fe" stroke-linejoin="round"/>
-          <circle cx="32" cy="12" r="3" fill="#2dd4bf"/>
-        </svg>
+      <div class="hero-logo-wrap">
+        <img class="hero-logo" src="人防logo.png" alt="上海保安人防 · Smart Security Service Safeguard" width="420" height="110" decoding="async" />
       </div>
       <p class="hero-badge"><span class="dot" aria-hidden="true"></span> TEAM HEALTH CHALLENGE 2026</p>
       <h1 class="hero-main-title"><span class="grad">人防健康管理月</span></h1>
-      <p class="hero-secondary-title">团队健康大比拼</p>
-      <p class="hero-sub">活动目的：提升自律、减脂塑形、健康管理、增强凝聚</p>
+      <p class="hero-secondary-title">团队健康大比拼（4.1-4.28）</p>
+      <p class="hero-purpose"><span class="purpose-label">活动目的：</span>提升自律、减脂塑形、健康管理、增强凝聚</p>
+      <p class="hero-sub">科学管理体重 · 团队携手争先 · 共享健康生活</p>
       <div class="hero-tags">
-        <span>提升自律</span>
-        <span>减脂塑形</span>
-        <span>健康管理</span>
-        <span>增强凝聚</span>
+        <span>团队作战</span>
+        <span>每周战报</span>
+        <span>隐私保护</span>
       </div>
-      <p class="hero-note">本页公示各队<strong>人数</strong>、<strong>初始总体重</strong>与<strong>第一周体重下降率</strong>（仅展示百分比，不展示个人公斤数）；队长姓名后标注 ★。团队总体下降率 =（双录成员初始体重合计 − 双录成员第一次称体重合计）÷ 双录成员初始体重合计。</p>
     </header>
 
     <div class="section-head">
       <span class="line" aria-hidden="true"></span>
       <h2>参赛队伍一览</h2>
       <span class="line" aria-hidden="true"></span>
-      <p>第一周战报 · 团队维度汇总，助力良性比拼与互相鼓劲</p>
     </div>
 
-    <div class="grid">
-      {% for t in teams %}
-      <article class="card{% if t.is_first_place %} card-first{% endif %}">
+    <section class="trend-panel">
+      <p class="trend-title">各队每周下降率表现</p>
+      <svg id="trend-chart" class="trend-svg" viewBox="0 0 980 300" preserveAspectRatio="none" aria-label="各队每周下降率表现折线图"></svg>
+      <div id="trend-tooltip" class="trend-tooltip"></div>
+      <div id="trend-legend" class="trend-legend"></div>
+      <p id="trend-tip" class="trend-tip">将鼠标移到触点可查看队伍与下降率详情</p>
+    </section>
+
+    {% for row in week_rows %}
+    <section class="week-row">
+      <div class="week-divider">
+        <span>
+          {% if row.week_no == 1 %}
+          第一周战报（4.1-4.8）
+          {% elif row.week_no == 2 %}
+          第二周战报（4.9-4.16）
+          {% elif row.week_no == 3 %}
+          第三周战报（4.17-4.22）
+          {% else %}
+          {{ row.label }}战报
+          {% endif %}
+        </span>
+      </div>
+      <div class="week-grid">
+      {% for card in row.cards %}
+      {% set t = card %}
+      {% set wr = card.week_report %}
+      <article class="card{% if card.is_week_first %} card-first{% endif %}">
         <div class="card-inner">
-          <p class="card-ribbon">{% if t.is_first_place %}本期第一{% else %}参赛队{% endif %}</p>
+          <p class="card-ribbon">
+            {% if card.is_week_first %}
+            {{ row.label }}第1名
+            {% else %}
+            {{ row.label }}第{{ card.rank }}名
+            {% endif %}
+          </p>
           <div class="card-head">
             <h3 class="team-name-row">
-              {% if t.is_first_place %}
-              <span class="team-crown" title="团队总体下降率第一" aria-label="团队总体下降率第一">
+              {% if card.is_week_first %}
+              <span class="team-crown" title="{{ row.label }}团队总体下降率第一" aria-label="{{ row.label }}团队总体下降率第一">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M5 16h14v2H5v-2z" fill="#d97706"/>
                   <path d="M4 9l2.2 5h11.6L20 9l-3.2 2.2L12 5.5 9.2 11.2 4 9z" fill="#fbbf24" stroke="#d97706" stroke-width="0.9" stroke-linejoin="round"/>
@@ -441,14 +573,15 @@
                 </svg>
               </span>
               {% endif %}
-              <span>{{ t.name }}</span>
+              <span>{{ t.team_name }}</span>
             </h3>
             <div class="stats stats-wide">
               <span class="stat"><span class="stat-val">{{ t.count }}</span> 人</span>
               <span class="stat"><span class="stat-val">{{ t.total_kg }}</span> kg <small>初始合计</small></span>
-              {% if t.has_first_weigh and t.weighed_count %}
-              <span class="stat"><span class="stat-val">{{ t.first_total_kg }}</span> kg <small>第一次合计</small></span>
-              <span class="stat"><span class="stat-val {% if t.team_drop_pct is not none and t.team_drop_pct > 0 %}drop-good{% elif t.team_drop_pct is not none and t.team_drop_pct < 0 %}drop-warn{% endif %}">{% if t.team_drop_pct is not none %}{{ "%.2f"|format(t.team_drop_pct) }}%{% else %}—{% endif %}</span> <small>团队总体下降率</small></span>
+              <span class="stat"><span class="stat-val">{{ wr.week_total_kg }}</span> kg <small>{{ wr.label }}合计</small></span>
+              <span class="stat"><span class="stat-val {% if wr.team_drop_pct is not none and wr.team_drop_pct > 0 %}drop-good{% elif wr.team_drop_pct is not none and wr.team_drop_pct < 0 %}drop-warn{% endif %}">{% if wr.team_drop_pct is not none %}{{ "%.2f"|format(wr.team_drop_pct) }}%{% else %}—{% endif %}</span> <small>{{ wr.label }}总体下降率</small></span>
+              {% if wr.week_no > 1 %}
+              <span class="stat"><span class="stat-val {% if wr.team_delta_from_prev is not none and wr.team_delta_from_prev > 0 %}drop-good{% elif wr.team_delta_from_prev is not none and wr.team_delta_from_prev < 0 %}drop-warn{% endif %}">{% if wr.team_delta_from_prev is not none %}{% if wr.team_delta_from_prev > 0 %}+{% endif %}{{ "%.2f"|format(wr.team_delta_from_prev) }}%{% else %}—{% endif %}</span> <small>较前一周变化</small></span>
               {% endif %}
             </div>
           </div>
@@ -463,28 +596,35 @@
               {% endif %}
             {% endfor %}
           </p>
-          {% if t.has_first_weigh %}
           <div class="week1-block">
-            <p class="week1-title">第一周体重下降率战报</p>
+            <p class="week1-title">{{ wr.label }}体重下降率战报</p>
             <ul class="week1-list">
-              {% for w in t.member_week1 %}
+              {% for w in wr.members %}
               <li>
                 <span class="week1-name">{% if w.captain %}<span class="captain">{{ w.name }} ★</span>{% else %}{{ w.name }}{% endif %}</span>
-                <span class="week1-pct {% if w.drop_pct is none %}muted{% elif w.drop_pct > 0 %}positive{% elif w.drop_pct < 0 %}negative{% endif %}">
-                  {% if w.drop_pct is not none %}{{ "%.2f"|format(w.drop_pct) }}%{% else %}待录{% endif %}
+                <span>
+                  <span class="week1-pct {% if w.drop_pct is none %}muted{% elif w.drop_pct > 0 %}positive{% elif w.drop_pct < 0 %}negative{% endif %}">
+                    {% if w.drop_pct is not none %}{{ "%.2f"|format(w.drop_pct) }}%{% else %}待录{% endif %}
+                  </span>
+                  {% if wr.week_no > 1 %}
+                  <span class="week1-extra {% if w.delta_from_prev is none %}muted{% elif w.delta_from_prev > 0 %}positive{% elif w.delta_from_prev < 0 %}negative{% endif %}">
+                    （较前一周 {% if w.delta_from_prev is not none %}{% if w.delta_from_prev > 0 %}+{% endif %}{{ "%.2f"|format(w.delta_from_prev) }}%{% else %}待录{% endif %}）
+                  </span>
+                  {% endif %}
                 </span>
               </li>
               {% endfor %}
             </ul>
-            {% if t.weighed_count and t.weighed_count < t.count %}
-            <p class="formula-note">本队共 {{ t.count }} 人，已双录（初始+第一次）{{ t.weighed_count }} 人；团队总体下降率按已双录成员合计计算。</p>
+            {% if wr.weighed_count and wr.weighed_count < t.count %}
+            <p class="formula-note">本队共 {{ t.count }} 人，已双录（初始+{{ wr.label }}）{{ wr.weighed_count }} 人；{{ wr.label }}团队总体下降率按已双录成员合计计算。</p>
             {% endif %}
           </div>
-          {% endif %}
         </div>
       </article>
       {% endfor %}
-    </div>
+      </div>
+    </section>
+      {% endfor %}
 
     <div class="footer-wave" aria-hidden="true">
       <svg viewBox="0 0 1200 48" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -499,9 +639,116 @@
       </svg>
     </div>
     <footer>
-      <strong>人防健康管理月</strong> · <strong>团队健康大比拼</strong> · 数据来自 <code style="font-size:0.85em;background:#e0f2fe;padding:0.1em 0.35em;border-radius:4px;">团队健康大比拼0408.xlsx</code><br />
-      按「队伍名称」分组；团队下降率公式：（∑初始 − ∑第一次）÷ ∑初始（口径：已双录成员）
+      <strong>人防健康管理月</strong> · <strong>团队健康大比拼</strong> · 数据来自 <code style="font-size:0.85em;background:#e0f2fe;padding:0.1em 0.35em;border-radius:4px;">团队健康大比拼0423.xlsx</code><br />
+      按「队伍名称」分组；团队下降率公式：（∑初始 − ∑当周）÷ ∑初始（口径：已双录成员）
     </footer>
   </div>
+  <script>
+    (function () {
+      const series = {{ trend_series | tojson }};
+      const svg = document.getElementById("trend-chart");
+      const legend = document.getElementById("trend-legend");
+      const tip = document.getElementById("trend-tip");
+      const tooltip = document.getElementById("trend-tooltip");
+      if (!svg || !legend || !Array.isArray(series) || series.length === 0) return;
+
+      const W = 980, H = 300;
+      const pad = { left: 54, right: 24, top: 20, bottom: 40 };
+      const xPos = [
+        pad.left,
+        (pad.left + (W - pad.right)) / 2,
+        W - pad.right
+      ];
+      const allValues = series.flatMap(s => s.points).filter(v => v !== null && v !== undefined);
+      if (!allValues.length) return;
+      let minY = Math.min(...allValues);
+      let maxY = Math.max(...allValues);
+      if (minY === maxY) {
+        minY -= 0.5;
+        maxY += 0.5;
+      }
+      const y = (v) => {
+        const t = (v - minY) / (maxY - minY);
+        return (H - pad.bottom) - t * (H - pad.top - pad.bottom);
+      };
+
+      const palette = ["#0284c7", "#059669", "#7c3aed", "#ea580c", "#dc2626", "#0f766e", "#2563eb", "#9333ea", "#0891b2", "#65a30d"];
+      const el = (name, attrs = {}) => {
+        const n = document.createElementNS("http://www.w3.org/2000/svg", name);
+        Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, String(v)));
+        return n;
+      };
+
+      svg.appendChild(el("line", { x1: pad.left, y1: H - pad.bottom, x2: W - pad.right, y2: H - pad.bottom, stroke: "#94a3b8", "stroke-width": 1 }));
+      svg.appendChild(el("line", { x1: pad.left, y1: pad.top, x2: pad.left, y2: H - pad.bottom, stroke: "#94a3b8", "stroke-width": 1 }));
+      svg.appendChild(el("text", { x: xPos[0], y: H - 12, "text-anchor": "middle", fill: "#334155", "font-size": 12 })).textContent = "第一周";
+      svg.appendChild(el("text", { x: xPos[1], y: H - 12, "text-anchor": "middle", fill: "#334155", "font-size": 12 })).textContent = "第二周";
+      svg.appendChild(el("text", { x: xPos[2], y: H - 12, "text-anchor": "middle", fill: "#334155", "font-size": 12 })).textContent = "第三周";
+      svg.appendChild(el("text", { x: 8, y: pad.top + 2, fill: "#475569", "font-size": 12 })).textContent = `${maxY.toFixed(2)}%`;
+      svg.appendChild(el("text", { x: 8, y: H - pad.bottom + 4, fill: "#475569", "font-size": 12 })).textContent = `${minY.toFixed(2)}%`;
+
+      series.forEach((s, i) => {
+        const c = palette[i % palette.length];
+        const valid = [];
+        const pointMeta = [];
+        s.points.forEach((v, idx) => {
+          if (v !== null && v !== undefined) {
+            const p = [xPos[idx], y(v)];
+            valid.push(p);
+            pointMeta.push({ x: p[0], y: p[1], weekNo: idx + 1, value: v });
+          }
+        });
+        if (valid.length >= 2) {
+          const d = valid.map((p, idx) => `${idx === 0 ? "M" : "L"} ${p[0]} ${p[1]}`).join(" ");
+          svg.appendChild(el("path", { d, fill: "none", stroke: c, "stroke-width": 2.2, "stroke-linecap": "round" }));
+        }
+        pointMeta.forEach((p) => {
+          const label = el("text", {
+            x: p.x,
+            y: p.y - 8,
+            "text-anchor": "middle",
+            fill: c,
+            "font-size": 11,
+            "font-weight": 700
+          });
+          label.textContent = `${Number(p.value).toFixed(2)}%`;
+          svg.appendChild(label);
+
+          const dot = el("circle", {
+            cx: p.x,
+            cy: p.y,
+            r: 4.2,
+            fill: c,
+            stroke: "#ffffff",
+            "stroke-width": 1.2,
+            style: "cursor:pointer"
+          });
+          const msg = `${s.name} · 第${p.weekNo}周：${Number(p.value).toFixed(2)}%`;
+          dot.addEventListener("mouseenter", (ev) => {
+            if (tip) {
+              tip.textContent = msg;
+            }
+            if (tooltip) {
+              const panelRect = svg.parentElement.getBoundingClientRect();
+              const x = ev.clientX - panelRect.left;
+              const y = ev.clientY - panelRect.top;
+              tooltip.textContent = msg;
+              tooltip.style.left = `${x}px`;
+              tooltip.style.top = `${y - 10}px`;
+              tooltip.style.display = "block";
+            }
+          });
+          dot.addEventListener("mouseleave", () => {
+            if (tooltip) tooltip.style.display = "none";
+          });
+          svg.appendChild(dot);
+        });
+        const item = document.createElement("span");
+        item.className = "trend-legend-item";
+        item.innerHTML = `<span class="trend-dot" style="background:${c}"></span><span>${s.name}</span>`;
+        legend.appendChild(item);
+      });
+    })();
+  </script>
 </body>
 </html>

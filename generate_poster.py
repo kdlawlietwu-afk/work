@@ -4,7 +4,7 @@ from pathlib import Path
 
 from flask import Flask, render_template
 
-from data import load_teams, resolve_xlsx_path
+from data import build_trend_series, build_week_rows, load_teams, resolve_xlsx_path
 
 ROOT = Path(__file__).resolve().parent
 XLSX = resolve_xlsx_path(ROOT)
@@ -15,8 +15,10 @@ app = Flask(__name__, template_folder=str(ROOT / "templates"))
 
 def main():
     teams = load_teams(XLSX)
+    week_rows = build_week_rows(teams)
+    trend_series = build_trend_series(teams)
     with app.app_context():
-        html = render_template("index.html", teams=teams)
+        html = render_template("index.html", teams=teams, week_rows=week_rows, trend_series=trend_series)
     OUT.write_text(html, encoding="utf-8")
     print(f"已写入: {OUT}")
 

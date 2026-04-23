@@ -6,12 +6,17 @@ from pathlib import Path
 
 import pandas as pd
 
-XLSX_FILENAME = "团队健康大比拼0408.xlsx"
+XLSX_FILENAME = "团队健康大比拼0423.xlsx"
 
 
 def resolve_xlsx_path(root: str | Path) -> Path:
-    """统一使用「团队健康大比拼0408.xlsx」。"""
-    return Path(root) / XLSX_FILENAME
+    """优先使用最新周报表，回退到旧文件名。"""
+    root_path = Path(root)
+    latest = root_path / XLSX_FILENAME
+    if latest.is_file():
+        return latest
+    fallback = root_path / "团队健康大比拼0408.xlsx"
+    return fallback
 
 
 def _team_label(value) -> str:
@@ -52,33 +57,22 @@ def _is_weekly_weigh_column(name: str) -> bool:
     return False
 
 
-def _first_weight_column(df: pd.DataFrame) -> str | None:
-    """第一次称体重列；无则返回 None。"""
-    preferred = [
-        "第一次称体重KG",
-        "第一次称体重kg",
-        "第一次称体重",
-        "第一次体重KG（4/8日）",
-        "第一次体重KG（4/8日)",
-        "第一次体重",
-        "体重KG（4/8日)",
-        "体重KG（4/8日）",
-    ]
-    for name in preferred:
-        if name in df.columns:
-            return name
+def _week_weight_column(df: pd.DataFrame, day_token: str) -> str | None:
+    token_full = f"4/{day_token}"
+    token_full_cn = f"4／{day_token}"
     for c in df.columns:
         s = str(c).strip()
-        if ("4/8" in s or "4／8" in s) and "体重" in s:
-            return c
-    for c in df.columns:
-        s = str(c).strip()
-        if "第一次" in s and ("体重" in s or "KG" in s.upper() or "kg" in s.lower()):
-            return c
-    for c in df.columns:
-        if "第一次" in str(c):
+        if "体重" in s and (token_full in s or token_full_cn in s):
             return c
     return None
+
+
+def _week_definitions(df: pd.DataFrame) -> list[dict]:
+    return [
+        {"week_no": 1, "label": "第一周", "col": _week_weight_column(df, "8")},
+        {"week_no": 2, "label": "第二周", "col": _week_weight_column(df, "15")},
+        {"week_no": 3, "label": "第三周", "col": _week_weight_column(df, "22")},
+    ]
 
 
 def _pct_drop(initial: float, first: float) -> float | None:
@@ -96,6 +90,10 @@ def _pct_drop(initial: float, first: float) -> float | None:
     return (init - fst) / init * 100.0
 
 
+def _fmt_pct(value: float | None) -> float | None:
+    return round(value, 2) if value is not None else None
+
+
 def load_teams(xlsx_path: str | Path) -> list[dict]:
     path = Path(xlsx_path)
     if not path.is_file():
@@ -109,20 +107,23 @@ def load_teams(xlsx_path: str | Path) -> list[dict]:
         raise ValueError("表中缺少「姓名」列")
 
     weight_col = _weight_column(df)
-    first_col = _first_weight_column(df)
+    week_defs = _week_definitions(df)
     captain_col = "队长or队员" if "队长or队员" in df.columns else None
 
     teams: list[dict] = []
     for raw_key, g in df.groupby("队伍名称", sort=False):
         g = g.copy()
         g["_init"] = pd.to_numeric(g[weight_col], errors="coerce")
-        if first_col:
-            g["_first"] = pd.to_numeric(g[first_col], errors="coerce")
-        else:
-            g["_first"] = pd.Series([pd.NA] * len(g), index=g.index, dtype="float64")
+        week_cols: dict[int, str] = {}
+        for wk in week_defs:
+            col = wk["col"]
+            if col:
+                cast_col = f"_w{wk['week_no']}"
+                g[cast_col] = pd.to_numeric(g[col], errors="coerce")
+                week_cols[wk["week_no"]] = cast_col
 
         names = []
-        member_week1: list[dict] = []
+        members_by_week: dict[int, list[dict]] = {1: [], 2: [], 3: []}
         for _, row in g.iterrows():
             name = str(row["姓名"]).strip()
             cap = False
@@ -130,30 +131,60 @@ def load_teams(xlsx_path: str | Path) -> list[dict]:
                 v = row.get(captain_col)
                 cap = (not pd.isna(v)) and str(v).strip() == "队长"
             names.append({"name": name, "captain": cap})
-            pct = _pct_drop(row["_init"], row["_first"]) if first_col else None
-            member_week1.append(
-                {
-                    "name": name,
-                    "captain": cap,
-                    "drop_pct": round(pct, 2) if pct is not None else None,
-                }
-            )
+            prev_pct: float | None = None
+            for wk in week_defs:
+                week_no = wk["week_no"]
+                cast_col = week_cols.get(week_no)
+                current = row[cast_col] if cast_col else None
+                pct = _pct_drop(row["_init"], current) if cast_col else None
+                delta = None if prev_pct is None or pct is None else pct - prev_pct
+                members_by_week[week_no].append(
+                    {
+                        "name": name,
+                        "captain": cap,
+                        "drop_pct": _fmt_pct(pct),
+                        "delta_from_prev": _fmt_pct(delta),
+                    }
+                )
+                prev_pct = pct
 
         captains = [m for m in names if m["captain"]]
         others = [m for m in names if not m["captain"]]
         names = captains + others
 
-        cap_order = {m["name"]: (0 if m["captain"] else 1) for m in member_week1}
-        member_week1.sort(key=lambda x: (cap_order.get(x["name"], 1), x["name"]))
+        cap_order = {m["name"]: (0 if m["captain"] else 1) for m in names}
+        for w in (1, 2, 3):
+            members_by_week[w].sort(key=lambda x: (cap_order.get(x["name"], 1), x["name"]))
 
         total_w = float(g["_init"].sum(skipna=True))
-        both = g["_init"].notna() & g["_first"].notna()
-        init_sum_both = float(g.loc[both, "_init"].sum())
-        first_sum_both = float(g.loc[both, "_first"].sum())
-        weighed = int(both.sum())
-        team_drop_pct: float | None = None
-        if first_col and init_sum_both > 0:
-            team_drop_pct = (init_sum_both - first_sum_both) / init_sum_both * 100.0
+        week_reports: list[dict] = []
+        has_any_week = False
+        prev_team_pct: float | None = None
+        for wk in week_defs:
+            week_no = wk["week_no"]
+            cast_col = week_cols.get(week_no)
+            has_week = cast_col is not None
+            both = g["_init"].notna() & g[cast_col].notna() if has_week else pd.Series([False] * len(g), index=g.index)
+            init_sum_both = float(g.loc[both, "_init"].sum()) if has_week else 0.0
+            curr_sum_both = float(g.loc[both, cast_col].sum()) if has_week else 0.0
+            weighed = int(both.sum()) if has_week else 0
+            team_drop_pct = ((init_sum_both - curr_sum_both) / init_sum_both * 100.0) if has_week and init_sum_both > 0 else None
+            team_delta = None if prev_team_pct is None or team_drop_pct is None else team_drop_pct - prev_team_pct
+            week_reports.append(
+                {
+                    "week_no": week_no,
+                    "label": wk["label"],
+                    "has_weigh": has_week,
+                    "weighed_count": weighed,
+                    "week_total_kg": round(curr_sum_both, 2) if has_week and weighed else None,
+                    "team_drop_pct": _fmt_pct(team_drop_pct),
+                    "team_delta_from_prev": _fmt_pct(team_delta),
+                    "members": members_by_week[week_no],
+                }
+            )
+            if has_week and team_drop_pct is not None:
+                has_any_week = True
+                prev_team_pct = team_drop_pct
 
         teams.append(
             {
@@ -161,13 +192,9 @@ def load_teams(xlsx_path: str | Path) -> list[dict]:
                 "sort_key": raw_key,
                 "count": len(g),
                 "total_kg": round(total_w, 2),
-                "first_total_kg": round(first_sum_both, 2) if first_col and weighed else None,
-                "baseline_for_rate_kg": round(init_sum_both, 2) if first_col and weighed else None,
-                "weighed_count": weighed if first_col else 0,
-                "team_drop_pct": round(team_drop_pct, 2) if team_drop_pct is not None else None,
                 "members": names,
-                "member_week1": member_week1,
-                "has_first_weigh": bool(first_col),
+                "week_reports": week_reports,
+                "has_any_week": has_any_week,
             }
         )
 
@@ -182,10 +209,81 @@ def load_teams(xlsx_path: str | Path) -> list[dict]:
     for t in teams:
         t.pop("sort_key", None)
 
-    rates = [t["team_drop_pct"] for t in teams if t.get("team_drop_pct") is not None]
+    def _week_rate(team: dict, week_no: int) -> float | None:
+        for w in team.get("week_reports", []):
+            if w.get("week_no") == week_no:
+                return w.get("team_drop_pct")
+        return None
+
+    rates = [_week_rate(t, 3) for t in teams]
+    rates = [x for x in rates if x is not None]
     best = max(rates) if rates else None
     for t in teams:
-        p = t.get("team_drop_pct")
+        p = _week_rate(t, 3)
         t["is_first_place"] = bool(best is not None and p is not None and p == best)
 
     return teams
+
+
+def build_week_rows(teams: list[dict]) -> list[dict]:
+    """按周生成卡片行，并按当周下降率从高到低排名。"""
+    week_rows: list[dict] = []
+    week_defs = [
+        (1, "第一周"),
+        (2, "第二周"),
+        (3, "第三周"),
+    ]
+    for week_no, label in week_defs:
+        cards: list[dict] = []
+        for t in teams:
+            wr = next((w for w in t.get("week_reports", []) if w.get("week_no") == week_no), None)
+            if not wr or not wr.get("has_weigh"):
+                continue
+            cards.append(
+                {
+                    "team_name": t["name"],
+                    "count": t["count"],
+                    "total_kg": t["total_kg"],
+                    "members": t["members"],
+                    "week_report": wr,
+                }
+            )
+
+        def _sort_key(card: dict):
+            pct = card["week_report"].get("team_drop_pct")
+            return (pct is None, -(pct or -10**9), card["team_name"])
+
+        cards.sort(key=_sort_key)
+        for idx, c in enumerate(cards, start=1):
+            c["rank"] = idx
+            c["is_week_first"] = idx == 1
+
+        week_rows.append(
+            {
+                "week_no": week_no,
+                "label": label,
+                "cards": cards,
+            }
+        )
+    return week_rows
+
+
+def build_trend_series(teams: list[dict]) -> list[dict]:
+    """构建第一至第三周各队下降率折线图数据。"""
+    series: list[dict] = []
+    for t in teams:
+        week1 = next((w for w in t.get("week_reports", []) if w.get("week_no") == 1), None)
+        week2 = next((w for w in t.get("week_reports", []) if w.get("week_no") == 2), None)
+        week3 = next((w for w in t.get("week_reports", []) if w.get("week_no") == 3), None)
+        y1 = week1.get("team_drop_pct") if week1 and week1.get("has_weigh") else None
+        y2 = week2.get("team_drop_pct") if week2 and week2.get("has_weigh") else None
+        y3 = week3.get("team_drop_pct") if week3 and week3.get("has_weigh") else None
+        if y1 is None and y2 is None and y3 is None:
+            continue
+        series.append(
+            {
+                "name": t["name"],
+                "points": [y1, y2, y3],
+            }
+        )
+    return series
